@@ -1,7 +1,7 @@
 # Optimizing and parallelizing fluid simulations using OpenMP, MPI, and OpenCL
 
 ## Introduction
-This project contains C implementations of a Lattice-Boltzmann fluid simulation parallelized using OpenMP, MPI, and OpenCL, written for the High Performance Computing unit at the University of Bristol([COMS30053](https://cs-uob.github.io/COMS30053)) during the 2024/25 academic year.
+This project contains C implementations of a Lattice-Boltzmann fluid simulation parallelized using OpenMP, MPI, and OpenCL, written for the High Performance Computing unit at the University of Bristol ([COMS30053](https://cs-uob.github.io/COMS30053)) during the 2024/25 academic year.
 
 ## Building and running the code
 Each implementation can be built and run as follows:
