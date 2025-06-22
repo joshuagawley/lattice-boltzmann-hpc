@@ -310,11 +310,11 @@ float timestep(const t_param params, t_speed *src_cells, t_speed *dst_cells,
       /* relaxation or rebound step */
       /* if the cell contains an obstacle, we proprogate and rebound */
       /* if the cell does not contain an obstacle, we do the relaxation step */
-#define RELAX_OR_REBOUND(i, src_speed_if_not_obstacle, src_speed_if_obstacle,  \
-                         dst_speed)                                            \
-  dst_speed = (obstacles[offset])                                              \
-                  ? src_speed_if_obstacle                                      \
-                  : (src_speed_if_not_obstacle +                               \
+#define RELAX_OR_REBOUND(i, src_speed_if_not_obstacle, src_speed_if_obstacle, \
+                         dst_speed)                                           \
+  dst_speed = (obstacles[offset])                                             \
+                  ? src_speed_if_obstacle                                     \
+                  : (src_speed_if_not_obstacle +                              \
                      params.omega * (d_equ[i] - src_speed_if_not_obstacle))
 
       RELAX_OR_REBOUND(0, speed0, speed0, dst_cells->speed0[offset]);
@@ -400,13 +400,11 @@ int initialise(const char *paramfile, const char *obstaclefile,
   /* read in the parameter values */
   int retval = fscanf(fp, "%d\n", &(params->nx));
 
-  if (retval != 1)
-    die("could not read param file: nx", __LINE__, __FILE__);
+  if (retval != 1) die("could not read param file: nx", __LINE__, __FILE__);
 
   retval = fscanf(fp, "%d\n", &(params->ny));
 
-  if (retval != 1)
-    die("could not read param file: ny", __LINE__, __FILE__);
+  if (retval != 1) die("could not read param file: ny", __LINE__, __FILE__);
 
   retval = fscanf(fp, "%d\n", &(params->max_iters));
 
@@ -425,13 +423,11 @@ int initialise(const char *paramfile, const char *obstaclefile,
 
   retval = fscanf(fp, "%f\n", &(params->accel));
 
-  if (retval != 1)
-    die("could not read param file: accel", __LINE__, __FILE__);
+  if (retval != 1) die("could not read param file: accel", __LINE__, __FILE__);
 
   retval = fscanf(fp, "%f\n", &(params->omega));
 
-  if (retval != 1)
-    die("could not read param file: omega", __LINE__, __FILE__);
+  if (retval != 1) die("could not read param file: omega", __LINE__, __FILE__);
 
   /* and close up the file */
   fclose(fp);

@@ -220,9 +220,9 @@ int main(int argc, char *argv[]) {
       displs[i] = displs[i - 1] + recv_counts[i - 1];
   }
 
-#define GATHER_CELLS(local_speed, speed)                                       \
-  MPI_Gatherv((local_speed) + params.nx, num_cells, MPI_FLOAT, (speed),        \
-              (const int *)&recv_counts, (const int *)&displs, MPI_FLOAT, 0,   \
+#define GATHER_CELLS(local_speed, speed)                                     \
+  MPI_Gatherv((local_speed) + params.nx, num_cells, MPI_FLOAT, (speed),      \
+              (const int *)&recv_counts, (const int *)&displs, MPI_FLOAT, 0, \
               MPI_COMM_WORLD)
 
   GATHER_CELLS(local_src_cells->speed0, all_cells->speed0);
@@ -394,12 +394,12 @@ float timestep(const t_param params, t_speed *src_cells, t_speed *dst_cells,
       /* relaxation or rebound step */
       /* if the cell contains an obstacle, we proprogate and rebound */
       /* if the cell does not contain an obstacle, we do the relaxation step */
-#define RELAX_OR_REBOUND(i, src_speed_if_not_obstacle, src_speed_if_obstacle,  \
-                         dst_speed)                                            \
-  dst_speed =                                                                  \
-      (obstacles[offset])                                                      \
-          ? (src_speed_if_obstacle)                                            \
-          : ((src_speed_if_not_obstacle) +                                     \
+#define RELAX_OR_REBOUND(i, src_speed_if_not_obstacle, src_speed_if_obstacle, \
+                         dst_speed)                                           \
+  dst_speed =                                                                 \
+      (obstacles[offset])                                                     \
+          ? (src_speed_if_obstacle)                                           \
+          : ((src_speed_if_not_obstacle) +                                    \
              params.omega * (d_equ[(i)] - (src_speed_if_not_obstacle)))
 
       RELAX_OR_REBOUND(0, speed0, speed0, dst_cells->speed0[offset]);
@@ -426,9 +426,9 @@ void halo_transfer(const t_param params, t_speed *cells, const int send_idx,
                    const int recv_idx, const int dst, const int src) {
   MPI_Status status;
 
-#define SENDRECV_SPEED(speed)                                                  \
-  MPI_Sendrecv((speed) + send_idx, params.nx, MPI_FLOAT, dst, params.rank,     \
-               (speed) + recv_idx, params.nx, MPI_FLOAT, src, MPI_ANY_TAG,     \
+#define SENDRECV_SPEED(speed)                                              \
+  MPI_Sendrecv((speed) + send_idx, params.nx, MPI_FLOAT, dst, params.rank, \
+               (speed) + recv_idx, params.nx, MPI_FLOAT, src, MPI_ANY_TAG, \
                MPI_COMM_WORLD, &status)
 
   SENDRECV_SPEED(cells->speed0);
@@ -502,13 +502,11 @@ int initialise(const char *paramfile, const char *obstaclefile, t_param *params,
   /* read in the parameter values */
   retval = fscanf(fp, "%d\n", &(params->nx));
 
-  if (retval != 1)
-    die("could not read param file: nx", __LINE__, __FILE__);
+  if (retval != 1) die("could not read param file: nx", __LINE__, __FILE__);
 
   retval = fscanf(fp, "%d\n", &(params->ny));
 
-  if (retval != 1)
-    die("could not read param file: ny", __LINE__, __FILE__);
+  if (retval != 1) die("could not read param file: ny", __LINE__, __FILE__);
 
   retval = fscanf(fp, "%d\n", &(params->max_iters));
 
@@ -527,13 +525,11 @@ int initialise(const char *paramfile, const char *obstaclefile, t_param *params,
 
   retval = fscanf(fp, "%f\n", &(params->accel));
 
-  if (retval != 1)
-    die("could not read param file: accel", __LINE__, __FILE__);
+  if (retval != 1) die("could not read param file: accel", __LINE__, __FILE__);
 
   retval = fscanf(fp, "%f\n", &(params->omega));
 
-  if (retval != 1)
-    die("could not read param file: omega", __LINE__, __FILE__);
+  if (retval != 1) die("could not read param file: omega", __LINE__, __FILE__);
 
   /* and close up the file */
   fclose(fp);
@@ -683,8 +679,7 @@ int initialise(const char *paramfile, const char *obstaclefile, t_param *params,
           blocked;
 
     /* Halo region cells */
-    if (yy == above_y)
-      (*local_obstacles_ptr)[xx] = blocked;
+    if (yy == above_y) (*local_obstacles_ptr)[xx] = blocked;
     if (yy == below_y)
       (*local_obstacles_ptr)[xx + (params->nrows + 1) * params->nx] = blocked;
 

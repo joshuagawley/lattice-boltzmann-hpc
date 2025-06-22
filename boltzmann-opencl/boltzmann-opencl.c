@@ -288,13 +288,11 @@ int initialise(const char *paramfile, const char *obstaclefile, t_param *params,
   /* read in the parameter values */
   retval = fscanf(fp, "%d\n", &(params->nx));
 
-  if (retval != 1)
-    die("could not read param file: nx", __LINE__, __FILE__);
+  if (retval != 1) die("could not read param file: nx", __LINE__, __FILE__);
 
   retval = fscanf(fp, "%d\n", &(params->ny));
 
-  if (retval != 1)
-    die("could not read param file: ny", __LINE__, __FILE__);
+  if (retval != 1) die("could not read param file: ny", __LINE__, __FILE__);
 
   retval = fscanf(fp, "%d\n", &(params->max_iters));
 
@@ -313,13 +311,11 @@ int initialise(const char *paramfile, const char *obstaclefile, t_param *params,
 
   retval = fscanf(fp, "%f\n", &(params->accel));
 
-  if (retval != 1)
-    die("could not read param file: accel", __LINE__, __FILE__);
+  if (retval != 1) die("could not read param file: accel", __LINE__, __FILE__);
 
   retval = fscanf(fp, "%f\n", &(params->omega));
 
-  if (retval != 1)
-    die("could not read param file: omega", __LINE__, __FILE__);
+  if (retval != 1) die("could not read param file: omega", __LINE__, __FILE__);
 
   /* and close up the file */
   fclose(fp);
@@ -638,7 +634,6 @@ int write_values(const t_param params, float *cells, int *obstacles,
       const int offset = ii + jj * params.nx;
       /* an occupied cell */
       if (obstacles[offset]) {
-
         u_x = u_y = u = 0.f;
         pressure = params.density * c_sq;
 
@@ -753,8 +748,7 @@ cl_device_id selectOpenCLDevice() {
   if (dev_env) {
     char *end;
     device_index = strtol(dev_env, &end, 10);
-    if (strlen(end))
-      die("invalid OCL_DEVICE variable", __LINE__, __FILE__);
+    if (strlen(end)) die("invalid OCL_DEVICE variable", __LINE__, __FILE__);
   }
 
   if (device_index >= total_devices) {
